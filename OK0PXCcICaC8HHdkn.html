@@ -1,0 +1,390 @@
+<html><head><base href="https://calcbeer.com/" target="_blank">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calc Beer - Compare e Economize na Cerveja!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #FFF3E0;
+    margin: 0;
+    padding: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="3" fill="%23FFB300" opacity="0.3"/></svg>');
+  }
+
+  .frame {
+    display: none;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 15px;
+  }
+
+  .frame.active {
+    display: block;
+  }
+
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: #FFECB3;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border: 2px solid #FFB300;
+  }
+
+  .logo {
+    display: block;
+    width: 270px;
+    height: auto;
+    margin: 0 auto 5px;
+  }
+
+  .beer-form {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #FFF8E1;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .beer-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+
+  .beer-input input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #FFB300;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .beer-input input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #FFB300;
+  }
+
+  button {
+    background-color: #B45309;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    font-size: 18px;
+    margin: 10px auto;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    max-width: 300px;
+  }
+
+  button:hover {
+    background-color: #92400E;
+  }
+
+  #results {
+    margin-top: 20px;
+  }
+
+  .result-item {
+    background-color: #FFF8E1;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .result-item:hover {
+    transform: translateY(-3px);
+  }
+
+  .best-deal {
+    background-color: #FFB300;
+    color: #B45309;
+    font-weight: bold;
+  }
+
+  .best-deal::before {
+    content: "🍺 ";
+  }
+
+  .savings {
+    background-color: #FFF8E1;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 2px dashed #FFB300;
+  }
+
+  .beer-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .nav-button {
+    background-color: #FFB300;
+    color: #B45309;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    max-width: 200px;
+  }
+
+  .nav-button:hover {
+    background-color: #FFA000;
+  }
+
+  .welcome-text {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .start-button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .compare-button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .instagram-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 20px auto 0;
+    transition: transform 0.3s ease;
+  }
+
+  .instagram-icon:hover {
+    transform: scale(1.1);
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    .beer-input {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .beer-input input {
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+
+    .beer-icon {
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+
+    button {
+      width: auto;
+      display: inline-block;
+    }
+  }
+
+  #resultsContent h2 {
+    text-align: center;
+  }
+
+  .add-beer-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .add-beer-button {
+    background-color: #FFB300;
+    color: #B45309;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+  }
+
+  .add-beer-button:hover {
+    background-color: #FFA000;
+  }
+</style>
+</head>
+<body>
+  <div id="home" class="frame active">
+    <div class="container">
+      <img src="/a/de0f40cb-2ab0-43a0-b2a3-b814078e35d9" alt="Calc Beer Logo" class="logo">
+      <p class="welcome-text">Bem-vindo! Compare preços de cervejas e economize.</p>
+      <div class="start-button-container">
+        <button onclick="showFrame('input')">Começar Comparação</button>
+      </div>
+      <a href="https://www.instagram.com/calcbeer" target="_blank">
+        <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#B45309">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div id="input" class="frame">
+    <div class="container">
+      <img src="/a/de0f40cb-2ab0-43a0-b2a3-b814078e35d9" alt="Calc Beer Logo" class="logo">
+      <div class="beer-form">
+        <div id="beerInputs">
+          <div class="beer-input">
+            <span class="beer-icon">🍺</span>
+            <input type="text" id="beer1" placeholder="Nome da Cerveja 1">
+            <input type="number" id="volume1" placeholder="Volume (ml)">
+            <input type="number" id="price1" placeholder="Preço (R$)">
+          </div>
+          <div class="beer-input">
+            <span class="beer-icon">🍺</span>
+            <input type="text" id="beer2" placeholder="Nome da Cerveja 2">
+            <input type="number" id="volume2" placeholder="Volume (ml)">
+            <input type="number" id="price2" placeholder="Preço (R$)">
+          </div>
+        </div>
+        <div class="add-beer-button-container">
+          <button onclick="addBeerInput()" class="add-beer-button">Inserir +</button>
+        </div>
+        <div class="compare-button-container">
+          <button onclick="comparePrices()">Comparar Preços</button>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-button" onclick="showFrame('home')">Voltar</button>
+      </div>
+      <a href="https://www.instagram.com/calcbeer" target="_blank">
+        <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#B45309">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div id="results" class="frame">
+    <div class="container">
+      <img src="/a/de0f40cb-2ab0-43a0-b2a3-b814078e35d9" alt="Calc Beer Logo" class="logo">
+      <div id="resultsContent"></div>
+      <div class="nav-buttons">
+        <button class="nav-button" onclick="showFrame('input')">Nova Comparação</button>
+        <button class="nav-button" onclick="showFrame('home')">Início</button>
+      </div>
+      <a href="https://www.instagram.com/calcbeer" target="_blank">
+        <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#B45309">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    let beerCount = 2;
+
+    function showFrame(frameId) {
+      document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('active'));
+      document.getElementById(frameId).classList.add('active');
+    }
+
+    function addBeerInput() {
+      beerCount++;
+      const newBeerInput = document.createElement('div');
+      newBeerInput.className = 'beer-input';
+      newBeerInput.innerHTML = `
+        <span class="beer-icon">🍺</span>
+        <input type="text" id="beer${beerCount}" placeholder="Nome da Cerveja ${beerCount}">
+        <input type="number" id="volume${beerCount}" placeholder="Volume (ml)">
+        <input type="number" id="price${beerCount}" placeholder="Preço (R$)">
+      `;
+      document.getElementById('beerInputs').appendChild(newBeerInput);
+    }
+
+    function comparePrices() {
+      const results = [];
+      for (let i = 1; i <= beerCount; i++) {
+        const name = document.getElementById(`beer${i}`).value;
+        const volume = parseFloat(document.getElementById(`volume${i}`).value);
+        const price = parseFloat(document.getElementById(`price${i}`).value);
+        
+        if (name && volume && price) {
+          const pricePerLiter = (price / volume) * 1000;
+          results.push({ name, pricePerLiter, volume, price });
+        }
+      }
+
+      results.sort((a, b) => a.pricePerLiter - b.pricePerLiter);
+
+      const resultsDiv = document.getElementById('resultsContent');
+      resultsDiv.innerHTML = '<h2 class="results-heading">🍻 Resultados da Comparação 🍻</h2>';
+
+      results.forEach((beer, index) => {
+        const resultItem = document.createElement('div');
+        resultItem.className = 'result-item';
+        if (index === 0) {
+          resultItem.classList.add('best-deal');
+        }
+        resultItem.innerHTML = `
+          <strong>${index === 0 ? 'Melhor custo-benefício: ' : ''}${beer.name}</strong><br>
+          Preço por litro: R$ ${beer.pricePerLiter.toFixed(2)}<br>
+          Volume: ${beer.volume} ml<br>
+          Preço: R$ ${beer.price.toFixed(2)}
+        `;
+        resultsDiv.appendChild(resultItem);
+      });
+
+      if (results.length > 0) {
+        const savings = document.createElement('div');
+        savings.className = 'savings';
+        savings.innerHTML = `<h3>💰 Economia Cervejeira 💰</h3>
+          <p>Se você optar pela cerveja mais econômica (${results[0].name}), 
+          sua economia em comparação com as outras opções será:</p>`;
+        
+        results.slice(1).forEach(beer => {
+          const savingsAmount = ((beer.pricePerLiter - results[0].pricePerLiter) * beer.volume / 1000).toFixed(2);
+          savings.innerHTML += `<p>🍺 R$ ${savingsAmount} em comparação com ${beer.name}</p>`;
+        });
+
+        resultsDiv.appendChild(savings);
+      }
+
+      showFrame('results');
+    }
+  </script>
+</body></html>
