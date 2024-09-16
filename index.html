@@ -378,7 +378,7 @@
         
         results.slice(1).forEach(beer => {
           const savingsAmount = ((beer.pricePerLiter - results[0].pricePerLiter) * beer.volume / 1000).toFixed(2);
-          savings.innerHTML += `<p>🍺 R$ ${savingsAmount} em comparação com ${beer.name}</p>`;
+          savings.innerHTML += `<p>🍺 R$ ${savingsAmount} por litro em comparação com ${beer.name}</p>`;
         });
 
         resultsDiv.appendChild(savings);
